@@ -1,0 +1,82 @@
+{
+  "timestamp": "00:32:12",
+  "machine_id": "machine1",
+  "machine_name": "CNC Milling Center",
+  "machine_type": "M",
+  "air_temperature": 298.9,
+  "process_temperature": 309.4,
+  "rotational_speed": 1431,
+  "torque": 36.2,
+  "tool_wear": 66,
+  "failure_probability": 0.0024599980721110894,
+  "status": "NORMAL",
+  "severity": "LOW",
+  "conditions": [
+    "No major abnormal sensor condition detected"
+  ],
+  "recommendation": "Machine appears stable. Continue normal monitoring.",
+  "rag_advice": "",
+  "llm_briefing": "[OK] [NOMINAL OPERATION] Machine M is running within healthy operating parameters. Failure risk is negligible (0.25%). Rotational speed (1431 RPM) and spindle torque (36.2 Nm) are balanced. Tool wear is currently at 66 min (well below the 150 min threshold). Directive: Continue scheduled cycle without intervention.",
+  "active_machine": "machine1",
+  "machines": {
+    "machine1": {
+      "timestamp": "00:32:12",
+      "machine_id": "machine1",
+      "machine_name": "CNC Milling Center",
+      "machine_type": "M",
+      "air_temperature": 298.9,
+      "process_temperature": 309.4,
+      "rotational_speed": 1431,
+      "torque": 36.2,
+      "tool_wear": 66,
+      "failure_probability": 0.0024599980721110894,
+      "status": "NORMAL",
+      "severity": "LOW",
+      "conditions": [
+        "No major abnormal sensor condition detected"
+      ],
+      "recommendation": "Machine appears stable. Continue normal monitoring.",
+      "rag_advice": "",
+      "llm_briefing": "[OK] [NOMINAL OPERATION] Machine M is running within healthy operating parameters. Failure risk is negligible (0.25%). Rotational speed (1431 RPM) and spindle torque (36.2 Nm) are balanced. Tool wear is currently at 66 min (well below the 150 min threshold). Directive: Continue scheduled cycle without intervention."
+    },
+    "machine2": {
+      "timestamp": "00:32:08",
+      "machine_id": "machine2",
+      "machine_name": "Heavy Duty Lathe",
+      "machine_type": "H",
+      "air_temperature": 299.5,
+      "process_temperature": 309.8,
+      "rotational_speed": 1533,
+      "torque": 47.2,
+      "tool_wear": 36,
+      "failure_probability": 0.0027373534500505434,
+      "status": "NORMAL",
+      "severity": "LOW",
+      "conditions": [
+        "No major abnormal sensor condition detected"
+      ],
+      "recommendation": "Machine appears stable. Continue normal monitoring.",
+      "rag_advice": "",
+      "llm_briefing": "[OK] [NOMINAL OPERATION] Machine H is running within healthy operating parameters. Failure risk is negligible (0.27%). Rotational speed (1533 RPM) and spindle torque (47.2 Nm) are balanced. Tool wear is currently at 36 min (well below the 150 min threshold). Directive: Continue scheduled cycle without intervention."
+    },
+    "machine3": {
+      "timestamp": "00:32:10",
+      "machine_id": "machine3",
+      "machine_name": "High Speed Grinder",
+      "machine_type": "L",
+      "air_temperature": 299.3,
+      "process_temperature": 308.3,
+      "rotational_speed": 1528,
+      "torque": 44.0,
+      "tool_wear": 55,
+      "failure_probability": 0.002281550180173653,
+      "status": "NORMAL",
+      "severity": "LOW",
+      "conditions": [
+        "No major abnormal sensor condition detected"
+      ],
+      "recommendation": "Machine appears stable. Continue normal monitoring.",
+      "rag_advice": "",
+      "llm_briefing": "[OK] [NOMINAL OPERATION] Machine L is running within healthy operating parameters. Failure risk is negligible (0.23%). Rotational speed (1528 RPM) and spindle torque (44.0 Nm) are balanced. Tool wear is currently at 55 min (well below the 150 min threshold). Directive: Continue scheduled cycle without intervention."
+    }
+  }

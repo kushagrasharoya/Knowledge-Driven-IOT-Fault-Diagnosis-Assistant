@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P_311 — Knowledge-Driven Industrial IoT Fault Diagnosis Assistant (Interactive Showcase)</title>
+    <style>
+        :root {
+            --bg-base: #0b0f19;
+            --card-bg: #111827;
+            --card-border: #1f2937;
+            --accent-cyan: #38bdf8;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --text-primary: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            padding: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Top Header */
+        .header {
+            background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 1.2rem 1.8rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .header-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .header-badge-container {
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 1.1rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .badge-normal {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-fault {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            box-shadow: 0 0 18px rgba(239, 68, 68, 0.5);
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.02); }
+        }
+
+        /* Fleet Cards Ribbon */
+        .fleet-ribbon {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .fleet-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 0.9rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .fleet-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .fleet-card.active {
+            border-color: var(--accent-cyan);
+            background: #1e293b;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Action Toolbar */
+        .toolbar {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 1rem 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: #1f2937;
+            border: 1px solid #374151;
+            color: var(--text-primary);
+            padding: 0.55rem 1.1rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn:hover {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .btn-normal {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--accent-green);
+            color: #34d399;
+        }
+        .btn-normal:hover {
+            background: rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-fault {
+            background: rgba(239, 68, 68, 0.18);
+            border-color: var(--accent-red);
+            color: #f87171;
+        }
+        .btn-fault:hover {
+            background: rgba(239, 68, 68, 0.35);
+        }
+
+        .btn-tour {
+            background: linear-gradient(135deg, #4f46e5 0%, #0284c7 100%);
+            border: none;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+        .btn-tour:hover {
+            filter: brightness(1.15);
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Gauges Cluster */
+        .gauges-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.4rem;
+        }
+
+        .card-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gauges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        .gauge-item {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .gauge-item canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .gauge-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+        }
+
+        .gauge-val {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Right Panel: Risk & XAI & RUL */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .risk-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+
+        .prob-bar-container {
+            background: #1e293b;
+            height: 18px;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin: 0.8rem 0;
+            position: relative;
+        }
+
+        .prob-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-green);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s ease;
+        }
+
+        .prob-threshold-marker {
+            position: absolute;
+            left: 40%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #f59e0b;
+            z-index: 2;
+        }
+
+        /* XAI Attribution Chart */
+        .xai-bar-item {
+            margin-bottom: 0.6rem;
+        }
+        .xai-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+        }
+        .xai-track {
+            background: #1e293b;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .xai-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-cyan);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* RUL Card */
+        .rul-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+        .rul-num {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-green);
+        }
+
+        /* AI Copilot & RAG Section */
+        .copilot-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .copilot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        @media (max-width: 900px) {
+            .copilot-grid { grid-template-columns: 1fr; }
+        }
+
+        .briefing-box {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            border: 1px solid #6366f1;
+            border-radius: 10px;
+            padding: 1.2rem;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+        }
+
+        .rag-box {
+            background: linear-gradient(135deg, #0c4a6e 0%, #0f172a 100%);
+            border: 1px solid #0284c7;
+            border-radius: 10px;
+            padding: 1.2rem;
+            box-shadow: 0 0 20px rgba(2, 132, 199, 0.15);
+        }
+
+        .tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 0.6rem;
+        }
+        .tag-llm { background: #4f46e5; color: #fff; }
+        .tag-rag { background: #0284c7; color: #fff; }
+
+        /* Audit Table */
+        .table-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.4rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+            margin-top: 0.8rem;
+        }
+
+        th {
+            background: #1e293b;
+            color: #cbd5e1;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 2px solid #334155;
+        }
+
+        td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid #1f2937;
+            color: #94a3b8;
+        }
+
+        tr:hover td {
+            background: #1a2234;
+        }
+
+        .status-ok { color: var(--accent-green); font-weight: 600; }
+        .status-warn { color: var(--accent-red); font-weight: 700; }
+
+        /* Credentials Footer */
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-border);
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div>
+            <div class="header-title">🏭 P_311 — Knowledge-Driven IoT Fault Diagnosis Assistant</div>
+            <div class="header-subtitle">
+                Learner: <b>KUSHAGRA SHAROYA</b> (Roll: <b>2400320100636</b>) &nbsp;|&nbsp; 
+                Mentor: <b>VIKAS MAURYA</b> &nbsp;|&nbsp; 
+                HCLTech BTech Project Training Program
+            </div>
+        </div>
+        <div class="header-badge-container">
+            <div id="statusBadge" class="badge badge-normal">🟢 SYSTEM NORMAL</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">
+                Telemetry Stream: <b style="color: var(--accent-cyan);">factory/+/sensors :1883</b>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fleet Selector Ribbon -->
+    <div class="fleet-ribbon">
+        <div class="fleet-card active" onclick="switchMachine('machine1')">
+            <div>
+                <div style="font-weight: 700; font-size: 0.95rem;">MACHINE 1: CNC Milling Center</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">Medium Load (Type M)</div>
+            </div>
+            <div id="fleetM1Status" style="color: var(--accent-green); font-weight: 700; font-size: 0.82rem;">✓ OK (0.2%)</div>
+        </div>
+        <div class="fleet-card" onclick="switchMachine('machine2')">
+            <div>
+                <div style="font-weight: 700; font-size: 0.95rem;">MACHINE 2: Heavy Duty Lathe</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">High Torque Turning (Type H)</div>
+            </div>
+            <div id="fleetM2Status" style="color: var(--accent-green); font-weight: 700; font-size: 0.82rem;">✓ OK (0.3%)</div>
+        </div>
+        <div class="fleet-card" onclick="switchMachine('machine3')">
+            <div>
+                <div style="font-weight: 700; font-size: 0.95rem;">MACHINE 3: High Speed Grinder</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted);">High RPM Finishing (Type L)</div>
+            </div>
+            <div id="fleetM3Status" style="color: var(--accent-green); font-weight: 700; font-size: 0.82rem;">✓ OK (0.2%)</div>
+        </div>
+    </div>
+
+    <!-- Action Toolbar & Interactive Controls -->
+    <div class="toolbar">
+        <div>
+            <span style="font-size: 0.85rem; color: var(--text-muted); margin-right: 0.6rem;">🧪 Interactive Fault Injection:</span>
+            <div class="btn-group" style="display: inline-flex;">
+                <button class="btn btn-normal" onclick="applyState('normal')">🟢 Nominal Cycle</button>
+                <button class="btn btn-fault" onclick="applyState('torque')">⚠️ Spindle Stall (Torque Overload)</button>
+                <button class="btn btn-fault" onclick="applyState('thermal')">🔥 Heat Dissipation Failure</button>
+                <button class="btn btn-fault" onclick="applyState('wear')">⏱️ Critical Tool Wear Limit</button>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-tour" onclick="startTour()">▶ Start Automated Guided Audio Tour</button>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+        <!-- Gauges Card -->
+        <div class="gauges-card">
+            <div class="card-header">
+                <span id="activeMachineTitle">CNC Milling Center — Live Physical Sensor Dials</span>
+                <span style="font-size: 0.82rem; color: var(--accent-cyan); font-weight: 600;">Sampling: 0.5 Hz (Every 2s)</span>
+            </div>
+            <div class="gauges-grid">
+                <div class="gauge-item">
+                    <canvas id="gaugeSpeed" width="220" height="130"></canvas>
+                    <div id="valSpeed" class="gauge-val">1526 RPM</div>
+                    <div class="gauge-label">Rotational Speed (Safe: 1300–1650)</div>
+                </div>
+                <div class="gauge-item">
+                    <canvas id="gaugeTorque" width="220" height="130"></canvas>
+                    <div id="valTorque" class="gauge-val">41.2 Nm</div>
+                    <div class="gauge-label">Spindle Torque (Limit: 55 Nm)</div>
+                </div>
+                <div class="gauge-item">
+                    <canvas id="gaugeTemp" width="220" height="130"></canvas>
+                    <div id="valTemp" class="gauge-val">308.7 K</div>
+                    <div class="gauge-label">Process Temp (Safe: &lt;312 K)</div>
+                </div>
+                <div class="gauge-item">
+                    <canvas id="gaugeWear" width="220" height="130"></canvas>
+                    <div id="valWear" class="gauge-val">45 min</div>
+                    <div class="gauge-label">Tool Wear (Limit: 150 min)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Risk, XAI & RUL -->
+        <div class="right-panel">
+            <!-- Machine Learning Risk Card -->
+            <div class="risk-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 700; font-size: 0.95rem;">ML Failure Probability</span>
+                    <span id="valProb" style="font-weight: 800; font-size: 1.3rem; color: var(--accent-green);">0.27%</span>
+                </div>
+                <div class="prob-bar-container">
+                    <div class="prob-threshold-marker" title="Calibrated Threshold: 40%"></div>
+                    <div id="probBar" class="prob-bar"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+                    <span>0% (Safe)</span>
+                    <span style="color: var(--accent-amber);">40% Threshold (Recall: 72.1%)</span>
+                    <span>100% (Failure)</span>
+                </div>
+            </div>
+
+            <!-- Explainable AI (XAI) Attribution -->
+            <div class="risk-card">
+                <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.8rem;">
+                    Explainable AI (XAI) Feature Attribution
+                </div>
+                <div class="xai-bar-item">
+                    <div class="xai-label-row">
+                        <span>Mechanical Torque</span>
+                        <span id="xaiTorqueVal">18%</span>
+                    </div>
+                    <div class="xai-track"><div id="xaiTorqueBar" class="xai-fill" style="width: 18%;"></div></div>
+                </div>
+                <div class="xai-bar-item">
+                    <div class="xai-label-row">
+                        <span>Tool Wear Degradation</span>
+                        <span id="xaiWearVal">12%</span>
+                    </div>
+                    <div class="xai-track"><div id="xaiWearBar" class="xai-fill" style="width: 12%;"></div></div>
+                </div>
+                <div class="xai-bar-item">
+                    <div class="xai-label-row">
+                        <span>Rotational Speed Stall Delta</span>
+                        <span id="xaiSpeedVal">8%</span>
+                    </div>
+                    <div class="xai-track"><div id="xaiSpeedBar" class="xai-fill" style="width: 8%;"></div></div>
+                </div>
+                <div class="xai-bar-item">
+                    <div class="xai-label-row">
+                        <span>Cutting Thermal Delta</span>
+                        <span id="xaiTempVal">5%</span>
+                    </div>
+                    <div class="xai-track"><div id="xaiTempBar" class="xai-fill" style="width: 5%;"></div></div>
+                </div>
+            </div>
+
+            <!-- Tool RUL Card -->
+            <div class="risk-card">
+                <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.6rem;">
+                    Tool Remaining Useful Life (RUL)
+                </div>
+                <div class="rul-box">
+                    <div>
+                        <div id="valRul" class="rul-num">105 min</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted);">Certified boundary: 150 min</div>
+                    </div>
+                    <div id="rulBadge" style="background: rgba(16,185,129,0.2); color: var(--accent-green); padding: 0.3rem 0.8rem; border-radius: 6px; font-weight: 700; font-size: 0.82rem;">
+                        HEALTHY
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stage 5 RAG & Stage 6 Local LLM Copilot -->
+    <div class="copilot-section">
+        <div class="card-header">
+            <span>Knowledge-Driven Technician Copilot & Semantic RAG</span>
+            <span style="font-size: 0.82rem; color: #a78bfa; font-weight: 600;">100% Zero-Hallucination Grounding</span>
+        </div>
+        <div class="copilot-grid">
+            <div class="briefing-box">
+                <span class="tag tag-llm">Stage 6: Local LLM Shop-Floor Copilot Briefing</span>
+                <div id="copilotBriefing" style="font-size: 0.88rem; color: #e2e8f0; line-height: 1.6;">
+                    <b>[OK] NOMINAL OPERATION:</b> Machine M is operating within safe physical parameters. Failure risk is negligible (0.27%). Spindle rotational speed (1526 RPM) and torque (41.2 Nm) are in perfect balance. Tool wear is currently at 45 minutes (well below the 150-minute replacement limit). Directive: Continue scheduled production cycle without interruption.
+                </div>
+            </div>
+            <div class="rag-box">
+                <span class="tag tag-rag">Stage 5: FAISS Semantic Vector Retrieved OEM SOP</span>
+                <div id="ragAdvice" style="font-size: 0.82rem; color: #bae6fd; line-height: 1.5; font-family: monospace;">
+                    TOPIC: NOMINAL PRODUCTION ENVELOPE<br>
+                    • Standard operating condition. Spindle torque nominal between 30 and 45 Nm.<br>
+                    • Continuous automated telemetry logging active.<br>
+                    • No physical maintenance intervention required.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audit Log Table -->
+    <div class="table-card">
+        <div class="card-header">
+            <span>📋 SQLite Historical Telemetry Log & Audit Trail</span>
+            <button class="btn btn-normal" onclick="exportCSV()">📥 Download Telemetry Log CSV</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Machine ID</th>
+                    <th>Speed (RPM)</th>
+                    <th>Torque (Nm)</th>
+                    <th>Process Temp (K)</th>
+                    <th>Tool Wear (min)</th>
+                    <th>Failure Risk</th>
+                    <th>Status</th>
+                    <th>Severity</th>
+                </tr>
+            </thead>
+            <tbody id="auditTableBody">
+                <tr>
+                    <td>00:15:10</td>
+                    <td>machine1</td>
+                    <td>1526</td>
+                    <td>41.2</td>
+                    <td>308.7</td>
+                    <td>45</td>
+                    <td>0.27%</td>
+                    <td><span class="status-ok">NORMAL</span></td>
+                    <td>LOW</td>
+                </tr>
+                <tr>
+                    <td>00:15:08</td>
+                    <td>machine3</td>
+                    <td>1540</td>
+                    <td>38.5</td>
+                    <td>308.2</td>
+                    <td>32</td>
+                    <td>0.22%</td>
+                    <td><span class="status-ok">NORMAL</span></td>
+                    <td>LOW</td>
+                </tr>
+                <tr>
+                    <td>00:15:06</td>
+                    <td>machine2</td>
+                    <td>1510</td>
+                    <td>43.1</td>
+                    <td>309.1</td>
+                    <td>50</td>
+                    <td>0.31%</td>
+                    <td><span class="status-ok">NORMAL</span></td>
+                    <td>LOW</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        P_311 — Knowledge-Driven Industrial IoT Fault Diagnosis Assistant &nbsp;|&nbsp; 
+        Learner: <b>KUSHAGRA SHAROYA</b> (2400320100636) &nbsp;|&nbsp; 
+        Mentor: <b>VIKAS MAURYA</b> &nbsp;|&nbsp; 
+        HCLTech BTech Project Training Program &nbsp;|&nbsp; Version 1.0 (2026)
+    </div>
+</div>
+
+<script>
+    // Audio Synthesizer (Buzzer & Clicks)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 440, type = 'sine', duration = 0.1) {
+        try {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        } catch(e) {}
+    }
+
+    function playSiren() {
+        try {
+            playBeep(880, 'sawtooth', 0.25);
+            setTimeout(() => playBeep(660, 'sawtooth', 0.25), 180);
+        } catch(e) {}
+    }
+
+    // State Database
+    let currentMachine = 'machine1';
+    const states = {
+        normal: {
+            speed: 1526, torque: 41.2, temp: 308.7, wear: 45, prob: 0.27,
+            status: 'NORMAL', severity: 'LOW',
+            xai: { torque: 18, wear: 12, speed: 8, temp: 5 },
+            briefing: "<b>[OK] NOMINAL OPERATION:</b> Machine is operating within safe physical parameters. Failure risk is negligible (0.27%). Rotational speed (1526 RPM) and torque (41.2 Nm) are in perfect balance. Tool wear is currently at 45 minutes (well below the 150-minute replacement limit). Directive: Continue scheduled cycle.",
+            rag: "TOPIC: NOMINAL PRODUCTION ENVELOPE\n• Standard operating condition. Spindle torque nominal between 30 and 45 Nm.\n• Continuous automated telemetry logging active.\n• No physical maintenance intervention required."
+        },
+        torque: {
+            speed: 1120, torque: 72.5, temp: 310.2, wear: 85, prob: 89.1,
+            status: 'FAULT RISK', severity: 'CRITICAL',
+            xai: { torque: 82, wear: 35, speed: 65, temp: 15 },
+            briefing: "<b>[CRITICAL ALARM] SPINDLE MECHANICAL OVERLOAD:</b> Machine has suffered an acute torque spike (72.5 Nm, exceeding the 55.0 Nm boundary) accompanied by a rotational stall drop (1120 RPM). ML failure probability is critical at 89.1%. Directive: Stop spindle feed immediately, inspect mechanical guideways for physical binding, check workpiece clamp tightness, and verify insert integrity.",
+            rag: "TOPIC: HIGH TORQUE & SPINDLE OVERLOAD\nCondition: Spindle or motor torque exceeds safe operating limits (>= 55 Nm).\nPossible Causes: Excessive depth of cut, guideway friction, mechanical binding.\nInspection Steps:\n1. Check feed rate against workpiece material.\n2. Inspect guideways and ball screws for obstruction.\n3. Compare torque draw with baseline.\nImmediate Action: Reduce mechanical load; inspect cutting inserts immediately."
+        },
+        thermal: {
+            speed: 1180, torque: 62.4, temp: 314.5, wear: 95, prob: 78.4,
+            status: 'FAULT RISK', severity: 'HIGH',
+            xai: { torque: 55, wear: 28, speed: 45, temp: 88 },
+            briefing: "<b>[HIGH ALERT] HEAT DISSIPATION FAILURE (HDF):</b> Process temperature has spiked to 314.5 K (exceeding the 312.0 K threshold) with elevated cutting torque. Heat generated in the cutting zone is exceeding dissipation capacity. ML failure probability is 78.4%. Directive: Verify coolant flow rate, inspect fluid nozzle alignment, check coolant filter for chip clogging, and reduce spindle RPM.",
+            rag: "TOPIC: HEAT DISSIPATION FAILURE (HDF)\nCondition: Cutting process temperature >= 312 K with low thermal dissipation delta.\nPossible Causes: Inadequate coolant delivery, clogged nozzles, high ambient heat.\nRecommended Actions:\n1. Inspect cutting fluid reservoir level.\n2. Clear coolant nozzle clogs.\n3. Ensure ambient cabinet exhaust fans are operational."
+        },
+        wear: {
+            speed: 1420, torque: 58.6, temp: 311.8, wear: 185, prob: 84.5,
+            status: 'FAULT RISK', severity: 'CRITICAL',
+            xai: { torque: 42, wear: 95, speed: 22, temp: 38 },
+            briefing: "<b>[CRITICAL ALARM] TOOL WEAR REPLACEMENT LIMIT EXCEEDED:</b> Active tool has reached 185 cutting minutes, drastically exceeding the certified 150-minute replacement limit. Remaining Useful Life (RUL) is 0 minutes. Failure probability is 84.5%. Directive: Complete current pass, do not start new workpiece cycle, index turret, and replace cutting insert immediately.",
+            rag: "TOPIC: TOOL WEAR FAILURE (TWF)\nCondition: Cumulative tool cutting time >= 150 minutes.\nFailure Risk: Flank wear causing workpiece surface damage and sudden micro-chipping.\nDirectives:\n1. Replace active carbide insert immediately.\n2. Zero the tool wear cycle counter in CNC controller.\n3. Verify tool height offset calibration."
+        }
+    };
+
+    function drawGauge(canvasId, value, min, max, unit, alertThreshold = null) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        const centerX = w / 2;
+        const centerY = h - 15;
+        const radius = 80;
+
+        // Background Arc
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, Math.PI, 0, false);
+        ctx.lineWidth = 14;
+        ctx.strokeStyle = '#1e293b';
+        ctx.stroke();
+
+        // Calculate fraction
+        const clampedVal = Math.min(Math.max(value, min), max);
+        const fraction = (clampedVal - min) / (max - min);
+        const endAngle = Math.PI + (fraction * Math.PI);
+
+        // Value Arc
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, Math.PI, endAngle, false);
+        ctx.lineWidth = 14;
+        ctx.strokeStyle = (alertThreshold && value >= alertThreshold) ? '#ef4444' : '#38bdf8';
+        ctx.stroke();
+
+        // Needle
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(endAngle);
+        ctx.beginPath();
+        ctx.moveTo(0, -3);
+        ctx.lineTo(radius - 5, 0);
+        ctx.lineTo(0, 3);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.restore();
+
+        // Center Pin
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fill();
+    }
+
+    function applyState(stateKey) {
+        playBeep(600, 'sine', 0.08);
+        const s = states[stateKey];
+        if (!s) return;
+
+        // Update Text
+        document.getElementById('valSpeed').innerText = `${s.speed} RPM`;
+        document.getElementById('valTorque').innerText = `${s.torque} Nm`;
+        document.getElementById('valTemp').innerText = `${s.temp} K`;
+        document.getElementById('valWear').innerText = `${s.wear} min`;
+        document.getElementById('valProb').innerText = `${s.prob.toFixed(1)}%`;
+
+        // Update Status Badge
+        const badge = document.getElementById('statusBadge');
+        if (s.status === 'FAULT RISK') {
+            badge.className = 'badge badge-fault';
+            badge.innerText = `⚠️ ${s.severity} RISK DETECTED (${s.prob.toFixed(0)}%)`;
+            playSiren();
+        } else {
+            badge.className = 'badge badge-normal';
+            badge.innerText = '🟢 SYSTEM NORMAL';
+        }
+
+        // Probability Bar
+        const probBar = document.getElementById('probBar');
+        probBar.style.width = `${Math.min(s.prob, 100)}%`;
+        probBar.style.background = (s.prob >= 40) ? '#ef4444' : '#10b981';
+        document.getElementById('valProb').style.color = (s.prob >= 40) ? '#ef4444' : '#10b981';
+
+        // XAI Bars
+        document.getElementById('xaiTorqueBar').style.width = `${s.xai.torque}%`;
+        document.getElementById('xaiTorqueVal').innerText = `${s.xai.torque}%`;
+        document.getElementById('xaiWearBar').style.width = `${s.xai.wear}%`;
+        document.getElementById('xaiWearVal').innerText = `${s.xai.wear}%`;
+        document.getElementById('xaiSpeedBar').style.width = `${s.xai.speed}%`;
+        document.getElementById('xaiSpeedVal').innerText = `${s.xai.speed}%`;
+        document.getElementById('xaiTempBar').style.width = `${s.xai.temp}%`;
+        document.getElementById('xaiTempVal').innerText = `${s.xai.temp}%`;
+
+        // Tool RUL
+        const rul = Math.max(0, 150 - s.wear);
+        const valRul = document.getElementById('valRul');
+        const rulBadge = document.getElementById('rulBadge');
+        valRul.innerText = `${rul} min`;
+        if (rul <= 0) {
+            valRul.style.color = '#ef4444';
+            rulBadge.style.background = 'rgba(239,68,68,0.2)';
+            rulBadge.style.color = '#ef4444';
+            rulBadge.innerText = 'EXPIRED';
+        } else if (rul < 35) {
+            valRul.style.color = '#f59e0b';
+            rulBadge.style.background = 'rgba(245,158,11,0.2)';
+            rulBadge.style.color = '#f59e0b';
+            rulBadge.innerText = 'WARNING';
+        } else {
+            valRul.style.color = '#10b981';
+            rulBadge.style.background = 'rgba(16,185,129,0.2)';
+            rulBadge.style.color = '#10b981';
+            rulBadge.innerText = 'HEALTHY';
+        }
+
+        // Copilot Briefing & RAG
+        document.getElementById('copilotBriefing').innerHTML = s.briefing;
+        document.getElementById('ragAdvice').innerText = s.rag;
+
+        // Redraw Gauges
+        drawGauge('gaugeSpeed', s.speed, 1000, 2500, 'RPM', null);
+        drawGauge('gaugeTorque', s.torque, 10, 80, 'Nm', 55);
+        drawGauge('gaugeTemp', s.temp, 295, 325, 'K', 312);
+        drawGauge('gaugeWear', s.wear, 0, 220, 'min', 150);
+
+        // Append to Audit Table
+        const now = new Date();
+        const timeStr = now.toTimeString().split(' ')[0];
+        const tbody = document.getElementById('auditTableBody');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${timeStr}</td>
+            <td>${currentMachine}</td>
+            <td>${s.speed}</td>
+            <td>${s.torque}</td>
+            <td>${s.temp}</td>
+            <td>${s.wear}</td>
+            <td>${s.prob.toFixed(1)}%</td>
+            <td><span class="${s.status === 'FAULT RISK' ? 'status-warn' : 'status-ok'}">${s.status}</span></td>
+            <td>${s.severity}</td>
+        `;
+        tbody.insertBefore(tr, tbody.firstChild);
+    }
+
+    function switchMachine(mId) {
+        currentMachine = mId;
+        const cards = document.querySelectorAll('.fleet-card');
+        cards.forEach(c => c.classList.remove('active'));
+        if (mId === 'machine1') {
+            cards[0].classList.add('active');
+            document.getElementById('activeMachineTitle').innerText = 'CNC Milling Center (Type M) — Live Physical Sensor Dials';
+        } else if (mId === 'machine2') {
+            cards[1].classList.add('active');
+            document.getElementById('activeMachineTitle').innerText = 'Heavy Duty Lathe (Type H) — Live Physical Sensor Dials';
+        } else {
+            cards[2].classList.add('active');
+            document.getElementById('activeMachineTitle').innerText = 'High Speed Grinder (Type L) — Live Physical Sensor Dials';
+        }
+        applyState('normal');
+    }
+
+    // Audio Voiceover Tour Mode
+    function speakText(text, onEnd = null) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utt = new SpeechSynthesisUtterance(text);
+            utt.rate = 1.0;
+            utt.pitch = 1.0;
+            if (onEnd) utt.onend = onEnd;
+            window.speechSynthesis.speak(utt);
+        } else {
+            if (onEnd) setTimeout(onEnd, 4000);
+        }
+    }
+
+    function startTour() {
+        speakText("Welcome to the P 311 Industrial IoT Fault Diagnosis Assistant. First, we examine our CNC Milling Center operating under nominal production parameters.", () => {
+            setTimeout(() => {
+                applyState('torque');
+                speakText("Now, we inject a high torque spindle stall. Notice the failure risk surging past our 40% threshold, the crimson alarm, and the Explainable AI attribution.", () => {
+                    setTimeout(() => {
+                        applyState('thermal');
+                        speakText("Next, we simulate a heat dissipation failure. Process temperature breaches limits, and our FAISS vector engine retrieves certified OEM coolant procedures.", () => {
+                            setTimeout(() => {
+                                applyState('wear');
+                                speakText("Finally, we simulate tool wear degradation. Remaining Useful Life hits 0 minutes, prompting an immediate tool replacement directive.", () => {
+                                    setTimeout(() => {
+                                        applyState('normal');
+                                        speakText("Nominal parameters are restored. All telemetry has been recorded to the SQLite audit log. Thank you.");
+                                    }, 6000);
+                                });
+                            }, 6000);
+                        });
+                    }, 6000);
+                });
+            }, 5000);
+        });
+    }
+
+    function exportCSV() {
+        const rows = [
+            ["Timestamp", "Machine ID", "Speed (RPM)", "Torque (Nm)", "Process Temp (K)", "Tool Wear (min)", "Failure Risk", "Status", "Severity"]
+        ];
+        document.querySelectorAll('#auditTableBody tr').forEach(tr => {
+            const rowData = [];
+            tr.querySelectorAll('td').forEach(td => rowData.push(td.innerText.trim()));
+            if (rowData.length) rows.push(rowData);
+        });
+        const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `P_311_${currentMachine}_telemetry_log.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Initial Render
+    window.onload = () => {
+        applyState('normal');
+    };
+</script>
+
+</body>
+</html>

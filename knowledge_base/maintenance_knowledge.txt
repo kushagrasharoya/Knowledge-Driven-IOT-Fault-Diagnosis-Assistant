@@ -1,0 +1,121 @@
+============================================================
+INDUSTRIAL MACHINE MAINTENANCE KNOWLEDGE BASE
+============================================================
+
+TOPIC: HIGH PROCESS TEMPERATURE
+Condition: Process temperature exceeds normal operating threshold (>= 312 K).
+Possible Causes:
+- Insufficient cooling or coolant flow failure
+- Excessive friction in spindle or drive components
+- Ambient temperature rise affecting heat dissipation
+- Continuous heavy load operation
+- Clogged heat exchanger or cooling filters
+
+Inspection Steps:
+1. Inspect the coolant reservoir level and coolant pump pressure.
+2. Check heat exchanger and radiator filters for dust or debris.
+3. Verify ambient air temperature and ventilation around the machine.
+4. Measure spindle bearing temperature using an infrared thermometer.
+5. Review machine load cycle and thermal dissipation efficiency.
+
+Recommended Actions:
+- Restore coolant levels or replace degraded cutting fluid.
+- Clean or replace clogged cooling radiator filters.
+- Reduce operating load cycle until temperature stabilizes below 310 K.
+- Inspect coolant delivery nozzles for blockages.
+- Schedule spindle bearing lubrication if localized friction is detected.
+
+
+TOPIC: HIGH TORQUE
+Condition: Spindle or motor torque exceeds safe operating limits (>= 55 Nm).
+Possible Causes:
+- Excessive mechanical load during cutting
+- Increased mechanical friction in drive train or guideways
+- Mechanical obstruction or binding
+- Worn or chipped cutting tool components
+- Tool-related resistance or incorrect feed rate
+
+Inspection Steps:
+1. Check whether the machine feed rate and depth of cut exceed workpiece specifications.
+2. Inspect moving mechanical components (guideways, ball screws) for binding.
+3. Check for excessive friction or lack of lubrication on sliding surfaces.
+4. Inspect the tool and related cutting insert edges for micro-chipping or breakage.
+5. Compare live torque with nominal baseline operating values.
+
+Recommended Actions:
+- Reduce excessive mechanical load and optimize feed rate.
+- Inspect mechanical drive components for physical resistance.
+- Inspect the cutting tool and replace it immediately if excessive wear is present.
+- Clear any chips or mechanical obstruction from the work area.
+- Monitor torque continuously after restarting the cycle.
+
+
+TOPIC: HIGH TOOL WEAR
+Condition: Cumulative tool wear exceeds replacement threshold (>= 150 min).
+Possible Causes:
+- Normal abrasive wear during prolonged cutting cycles
+- Cutting tough or high-hardness materials with standard tooling
+- Inadequate lubrication during cutting operations
+- Thermal softening due to elevated cutting temperatures
+- Tool life expired beyond manufacturer guidelines
+
+Inspection Steps:
+1. Stop the cycle and visually inspect the cutting tool edge using a magnifier.
+2. Check flank wear, crater wear, and insert edge degradation.
+3. Measure workpiece surface finish tolerance for degradation.
+4. Review total continuous operating minutes on the active tool.
+5. Check coolant concentration and delivery directly at the cutting zone.
+
+Recommended Actions:
+- Replace the worn cutting tool insert with a calibrated fresh insert.
+- Reset the tool wear tracking timer in the machine controller.
+- Verify tool offset calibrations and zero-point alignment.
+- Ensure proper coolant flow directed at the tool-workpiece interface.
+- Inspect workpiece quality to ensure tolerances remain within specifications.
+
+
+TOPIC: LOW ROTATIONAL SPEED
+Condition: Spindle rotational speed drops below normal operating range (< 1300 RPM).
+Possible Causes:
+- Heavy cutting load causing spindle motor stall or slip
+- Variable frequency drive (VFD) fault or power fluctuation
+- Belt slippage or drive coupling misalignment
+- Bearing pre-seizure or severe mechanical resistance
+- Spindle motor overload protection triggering current throttling
+
+Inspection Steps:
+1. Check VFD status codes and drive fault logs.
+2. Inspect spindle drive belts and pulleys for tension and wear.
+3. Disengage spindle drive and check spindle rotation by hand for resistance.
+4. Measure input voltage and current to the spindle motor.
+5. Verify whether workpiece depth of cut is stalling the spindle.
+
+Recommended Actions:
+- Reduce depth of cut and feed rate to eliminate spindle stall.
+- Re-tension or replace worn spindle drive belts.
+- Inspect spindle bearings for overheating or mechanical binding.
+- Check VFD configuration parameters and electrical supply stability.
+- Restart spindle after verifying electrical and mechanical clearance.
+
+
+TOPIC: MACHINE FAILURE RISK
+Condition: Elevated overall failure probability (>= 40% to 100%) detected by predictive ML model.
+Possible Causes:
+- Compound degradation across multiple mechanical/thermal subsystems
+- Elevated temperature combined with high torque or excessive tool wear
+- Imminent component breakdown under peak production strain
+- Sensor telemetry deviations reflecting anomalous machine dynamics
+
+Inspection Steps:
+1. Perform an emergency pause or isolation of the machine cycle.
+2. Execute a multi-point inspection: temperatures, spindle torque, tool wear, and vibration.
+3. Inspect safety interlocks and review diagnostic telemetry stream.
+4. Check error codes on the main CNC/PLC controller console.
+5. Verify mechanical clearances before attempting manual jog.
+
+Recommended Actions:
+- Stop or isolate the machine immediately to prevent catastrophic tool/spindle damage.
+- Perform root cause diagnosis on the flagged sensor anomalies.
+- Replace identified worn consumables (tools, filters, seals).
+- Perform a controlled dry-run test at reduced speed before resuming production.
+- Log the incident in the predictive maintenance maintenance register.

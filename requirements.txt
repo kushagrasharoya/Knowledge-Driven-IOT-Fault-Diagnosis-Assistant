@@ -1,0 +1,23 @@
+# P_311 — Knowledge Driven IoT Fault Diagnosis Assistant
+# Core Dependencies
+
+# IoT & Networking
+paho-mqtt>=2.1.0
+
+# Machine Learning & Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+joblib>=1.3.0
+
+# Vector Database & Embeddings (RAG)
+faiss-cpu>=1.7.4
+sentence-transformers>=2.2.0
+torch>=2.0.0
+
+# Visualization & Dashboard
+streamlit>=1.30.0
+plotly>=5.18.0
+
+# LLM & HTTP Client
+requests>=2.31.0
