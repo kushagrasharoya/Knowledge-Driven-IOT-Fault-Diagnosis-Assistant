@@ -15,6 +15,8 @@
 * **Learner:** KUSHAGRA SHAROYA (Roll No. 2400320100636)
 * **Mentor:** VIKAS MAURYA
 * **Organization:** HCLTech BTech Project Training Program
+* **GitHub Repository:** [github.com/kushagrasharoya/Knowledge-Driven-IOT-Fault-Diagnosis-Assistant](https://github.com/kushagrasharoya/Knowledge-Driven-IOT-Fault-Diagnosis-Assistant)
+* **Live YouTube Video Walkthrough:** [youtu.be/co-VyIK7CFI](https://youtu.be/co-VyIK7CFI)
 
 ---
 
@@ -96,4 +98,6 @@
 
 ### Slide 12: Viva Defense & Conclusion
 * **Key Viva Defense:** Demonstrates why tree-based models beat deep learning on tabular telemetry, how precision-recall trade-offs dictate threshold calibration, and why RAG eliminates LLM hallucinations.
+* **Public GitHub Repository:** [https://github.com/kushagrasharoya/Knowledge-Driven-IOT-Fault-Diagnosis-Assistant](https://github.com/kushagrasharoya/Knowledge-Driven-IOT-Fault-Diagnosis-Assistant)
+* **Live YouTube Video Walkthrough:** [https://youtu.be/co-VyIK7CFI](https://youtu.be/co-VyIK7CFI)
 * **Future Scope:** Hardware-in-the-loop edge microcontroller deployment, acoustic vibration FFT, and automated ERP spare-parts replenishment.

@@ -112,9 +112,11 @@ p311-iot-fault-diagnosis/
 ---
 
 ## 🎥 Live System Demo Video
-The complete live dashboard walkthrough has been recorded and exported in both universal MP4 and WebM formats:
-* 🎬 **Full HD MP4 Video:** [docs/videos/P_311_Industrial_IoT_Demo.mp4](docs/videos/P_311_Industrial_IoT_Demo.mp4) (1.2 MB)
-* 🌐 **High-Definition WebM:** [docs/videos/P_311_Industrial_IoT_Demo.webm](docs/videos/P_311_Industrial_IoT_Demo.webm) (2.5 MB)
+The live system demonstration is available on YouTube and stored locally in the repository:
+* 📺 **YouTube Video Walkthrough:** **[https://youtu.be/co-VyIK7CFI](https://youtu.be/co-VyIK7CFI)**
+* 🎬 **Full HD MP4 Video:** [docs/videos/P_311_Industrial_IoT_Demo.mp4](docs/videos/P_311_Industrial_IoT_Demo.mp4) (4.2 MB)
+* 🌐 **High-Definition WebM:** [docs/videos/P_311_Industrial_IoT_Demo.webm](docs/videos/P_311_Industrial_IoT_Demo.webm) (4.1 MB)
+* 🖥️ **Interactive Standalone Showcase:** [docs/DEMO_INTERACTIVE_SHOWCASE.html](docs/DEMO_INTERACTIVE_SHOWCASE.html) *(Double-click to open in any browser)*
 
 **Video Highlights Demonstrated:**
 1. Multi-machine real-time telemetry streaming over MQTT.

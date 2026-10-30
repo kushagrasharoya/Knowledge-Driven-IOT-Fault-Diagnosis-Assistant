@@ -5,9 +5,20 @@
 **Roll Number:** 2400320100636  
 **Mentor Name:** VIKAS MAURYA  
 **Program:** HCLTech BTech Project Training Program (Embedded Systems & IoT)  
+**GitHub Repository:** [github.com/kushagrasharoya/Knowledge-Driven-IOT-Fault-Diagnosis-Assistant](https://github.com/kushagrasharoya/Knowledge-Driven-IOT-Fault-Diagnosis-Assistant)  
+**Live YouTube Video Demo:** [youtu.be/co-VyIK7CFI](https://youtu.be/co-VyIK7CFI)  
 **Native Word Report File:** [docs/P_311_Project_Report.docx](P_311_Project_Report.docx)  
 **Presentation Deck:** [docs/P_311_Final_Presentation_Deck.pptx](P_311_Final_Presentation_Deck.pptx)  
+**Interactive Demo App:** [docs/DEMO_INTERACTIVE_SHOWCASE.html](DEMO_INTERACTIVE_SHOWCASE.html)  
 **Date & Version:** October 2026 | Version 1.0 (Production Release)  
+
+---
+
+## 🔗 Project Verification & Demonstration Links
+* 🌐 **Public GitHub Repository:** [https://github.com/kushagrasharoya/Knowledge-Driven-IOT-Fault-Diagnosis-Assistant](https://github.com/kushagrasharoya/Knowledge-Driven-IOT-Fault-Diagnosis-Assistant)
+* 🎥 **YouTube Live Video Walkthrough:** [https://youtu.be/co-VyIK7CFI](https://youtu.be/co-VyIK7CFI)
+* 🎬 **Local Full HD Video File:** [docs/videos/P_311_Industrial_IoT_Demo.mp4](videos/P_311_Industrial_IoT_Demo.mp4)
+* 🖥️ **Interactive Standalone Showcase:** [docs/DEMO_INTERACTIVE_SHOWCASE.html](DEMO_INTERACTIVE_SHOWCASE.html)
 
 ---
 
